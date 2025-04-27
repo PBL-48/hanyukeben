@@ -167,81 +167,7 @@ window.onload=()=>{
 			default:
 				input=String(input)+String(e.key);
 			};
-		switch (input.slice(-2)) { // 直近2文字を取り出し、声調をつける
-			case 'a1':
-				input= String(input.slice(0,input.length-2))+'ā';
-				break;
-			case 'a2':
-				input= String(input.slice(0,input.length-2))+'á';
-				break;
-			case 'a3':
-				input= String(input.slice(0,input.length-2))+'ǎ';
-				break;
-			case 'a4':
-				input= String(input.slice(0,input.length-2))+'à';
-				break;
-			case 'i1':
-				input= String(input.slice(0,input.length-2))+'ī';
-				break;
-			case 'i2':
-				input= String(input.slice(0,input.length-2))+'í';
-				break;
-			case 'i3':
-				input= String(input.slice(0,input.length-2))+'ǐ';
-				break;
-			case 'i4':
-				input= String(input.slice(0,input.length-2))+'ì';
-				break;
-			case 'u1':
-				input= String(input.slice(0,input.length-2))+'ū';
-				break;
-			case 'u2':
-				input= String(input.slice(0,input.length-2))+'ú';
-				break;
-			case 'u3':
-				input= String(input.slice(0,input.length-2))+'ǔ';
-				break;
-			case 'u4':
-				input= String(input.slice(0,input.length-2))+'ù';
-				break;
-			case 'ü1':
-				input= String(input.slice(0,input.length-2))+'ǖ';
-				break;
-			case 'ü2':
-				input= String(input.slice(0,input.length-2))+'ǘ';
-				break;
-			case 'ü3':
-				input= String(input.slice(0,input.length-2))+'ǚ';
-				break;
-			case 'ü4':
-				input= String(input.slice(0,input.length-2))+'ǜ';
-				break;
-			case 'e1':
-				input= String(input.slice(0,input.length-2))+'ē';
-				break;
-			case 'e2':
-				input= String(input.slice(0,input.length-2))+'é';
-				break;
-			case 'e3':
-				input= String(input.slice(0,input.length-2))+'ě';
-				break;
-			case 'e4':
-				input= String(input.slice(0,input.length-2))+'è';
-				break;
-			case 'o1':
-				input= String(input.slice(0,input.length-2))+'ō';
-				break;
-			case 'o2':
-				input= String(input.slice(0,input.length-2))+'ó';
-				break;
-			case 'o3':
-				input= String(input.slice(0,input.length-2))+'ǒ';
-				break;
-			case 'o4':
-				input= String(input.slice(0,input.length-2))+'ò';
-				break;
-
-		};
+		
 
 		output.innerHTML = input; //htmlに表示する
 		return false;
@@ -281,7 +207,7 @@ window.onload=()=>{
 			wrongwords=[];
 		}
 		input="";
-		output.innerHTML=input; //入力欄をリセット
+		output.value=""; //入力欄もクリア
 		result.innerHTML=msg; //メッセージを表示
 		result.classList.remove('fade');
 		setTimeout(function(){
@@ -292,6 +218,22 @@ window.onload=()=>{
 
 
 	});
+	function convertToneNumberToMarkRealTime(pinyin) {
+	    	const toneMap = {
+       			 	'a': ['ā','á','ǎ','à'],
+       			 	'o': ['ō','ó','ǒ','ò'],
+       			 	'e': ['ē','é','ě','è'],
+      			 	'i': ['ī','í','ǐ','ì'],
+       			 	'u': ['ū','ú','ǔ','ù'],
+       				'ü': ['ǖ','ǘ','ǚ','ǜ']
+			};
+   			 pinyin = pinyin.replace(/v/g, 'ü');
+
+			return pinyin.replace(/([aeiouü])([1-4])/g, (match, vowel, tone) => {
+			return toneMap[vowel][parseInt(tone) - 1];
+		});
+	}
+
 	function setItem(index){ //プログレスバー
 		chn.textContent=words[index][0];
 		num.innerHTML=`${index+1}問目/全${words.length}問`;
