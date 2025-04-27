@@ -186,38 +186,39 @@ window.onload=()=>{
 	let index=0;
 	let correct=0;
 
-	btn.addEventListener('click',()=>{
-		let ans=input;
-		let msg='';
+	btn.addEventListener('click', ()=>{
+		let ans = convertToneNumberToMark(input); // ←ここで変換する！
+		let msg = '';
 		chn.classList.remove("fade");
+		
 		if (ans == words[index][1]){
-			correct++; //正解数を増やす
-			msg='〇';
-		}else{
-			msg=`× 正:${words[index][1]}`;
-			wrong.push(words[index][0]); //pythonでいうappend
-			wrongwords.push([String(words[index][0]),String(words[index][1])]);
+			correct++;
+			msg = '〇';
+		} else {
+			msg = `× 正:${words[index][1]}`;
+			wrong.push(words[index][0]);
+			wrongwords.push([String(words[index][0]), String(words[index][1])]);
 		}
-		if(index==words.length-1){
-			index=-1; //後で+1するので
-			document.getElementById('wrong').innerHTML=`全${words.length}問中${correct}問正解<br>`+"間違えた単語でもう一度テスト:<br>"+wrong;
-			wrong=[]; //間違えた単語をリセット
-			words=wrongwords;
-			ls.setItem("wrong1", JSON.stringify(wrongwords)) //localStorageに保存。数字は課による
-			wrongwords=[];
+	
+		if (index == words.length-1){
+			index = -1;
+			document.getElementById('wrong').innerHTML = `全${words.length}問中${correct}問正解<br>` + "間違えた単語でもう一度テスト:<br>" + wrong;
+			wrong = [];
+			words = wrongwords;
+			ls.setItem("wrong1", JSON.stringify(wrongwords));
+			wrongwords = [];
 		}
-		input="";
-		output.value=""; //入力欄もクリア
-		result.innerHTML=msg; //メッセージを表示
+		input = "";
+		output.value = ""; // 入力欄もクリア
+		result.innerHTML = msg;
 		result.classList.remove('fade');
 		setTimeout(function(){
 			result.classList.add('fade');
-		},1500); //○とかをフェードアウトさせる。なんか動いてない。
-		setItem(++index); //indexを一つずらす
+		},1500);
+		setItem(++index);
 		output.focus();
-
-
 	});
+	
 	function convertToneNumberToMarkRealTime(pinyin) {
 	    	const toneMap = {
        			 	'a': ['ā','á','ǎ','à'],
